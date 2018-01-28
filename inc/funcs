@@ -33,8 +33,6 @@ fi
 
 #### Current actions
 gfnGetCurrentAction() {
-	local
-
 	case "$gsScriptName" in
 		'MySB_SecurityRules')
 			if [ ! -z "`ps ax | grep -v 'grep' | grep '$gsScriptName'`" ]; then
@@ -43,7 +41,7 @@ gfnGetCurrentAction() {
 					echo -n "."
 					sleep 0.5
 				done
-				gfnStatusLSB
+				gfnStatusSTD
 			fi
 		;;
 	esac

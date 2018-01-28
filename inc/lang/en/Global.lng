@@ -52,7 +52,7 @@ Global_Subject_rTorrentNotify="MySB - Available files !"
 
 Global_Error_StatusSTD="${CRED}Looks like something is wrong, check the log '$MySB_InstallDir/logs/$gsScriptName.*', aborting.$CEND"
 
-Global_WaitingForTaskFinish="The $gsScriptName script is running, wait..."
+Global_WaitingForTaskFinish="${CBLUE}The $gsScriptName script is running, wait$CEND..."
 
 Funcs_Stopping="Stopping of"
 Funcs_Killing="Killing of"
