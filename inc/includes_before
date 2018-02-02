@@ -72,12 +72,9 @@ if [ "$BANNER" == "ON" ]; then
 	gfnBannerGenerator
 fi
 
-#### 4 - Check if an action is already started
-gfnGetCurrentAction
-
-#### 5 - gfnLogRotate (Upgrade)
+#### 4 - Actions by scripts
 case "$gsScriptName" in
-	From_*)
+	From_*) # gfnLogRotate (Upgrade)
 		sScreenId="`screen -ls | grep 'MySB_Upgrade' | grep 'Attached' | awk '{ print $1 }'`"
 		echo
 		echo -e "$Upgrade_Banner" | sed 's/screen -x MySB_Upgrade/screen -x $sScreenId/g;'
@@ -86,7 +83,7 @@ case "$gsScriptName" in
 	;;
 esac
 
-#### 6 - STD Out/Err (after banner)
+#### 5 - STD Out/Err (after banner)
 if [ "$TIMESTAMP" == "ON" ]; then
 	echo "------------------------------------------------------------" >> $MySB_InstallDir/logs/$gsScriptName.log
 	case "$gsScriptName" in

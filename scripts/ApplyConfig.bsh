@@ -63,7 +63,7 @@ DoApplyConfig() {
 
 	# 2 - En fonction de l'ensemble des commandes, on réorganise certaines.
 	# Par exemple, la commande 'MySB_SecurityRules' devra être exécutée une seule fois et en dernier
-	# On en garde qu'une seule, tout utilisateur confondu et lui assigne une priorité maxi.
+	# On en garde qu'une seule tout utilisateur confondu et assigne une priorité maxi.
 	sCommandsPriorities="`cmdMySQL 'MySB_db' "SELECT min(priority), max(priority) FROM commands WHERE commands='MySB_SecurityRules' AND user='$User';" | sed 's/NULL/0/g;' | sed 's/\t/|/g;'`"
 	nMinPriority="`echo $sCommandsPriorities | awk '{split($0,a,"|"); print a[1]}'`"
 	nMaxPriority="`echo $sCommandsPriorities | awk '{split($0,a,"|"); print a[2]}'`"

@@ -137,11 +137,11 @@ if [ -f $MySB_InstallDir/logs/$gsScriptName.log ]; then
 fi
 
 #### 7 - Add in 'commands' table to prevent simultaneous calls
-if [ ! -z "$gsScriptName" ]; then
-	case "$gsScriptName" in
-		MySB_SecurityRules)	gfnAddSecurityInQueue 'remove' 'MySB_SecurityRules' "$@ $$";;
-	esac
-fi
+# if [ ! -z "$gsScriptName" ]; then
+	# case "$gsScriptName" in
+		# MySB_SecurityRules)	gfnAddSecurityInQueue 'remove' 'MySB_SecurityRules' "$@ $$";;
+	# esac
+# fi
 
 #### 8 - Reboot after an install or an upgrade
 if [ "$REBOOT" == "YES" ]; then

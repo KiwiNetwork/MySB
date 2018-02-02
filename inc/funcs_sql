@@ -37,34 +37,4 @@ cmdMySQL() {
 	mysql --defaults-extra-file=/root/.config.cnf --database=$sDatabase -w --connect-timeout=10 -s -N -e "$sRequest" $sVerbose
 }
 
-#### Add MySB_SecurityRules command in queue
-gfnAddSecurityInQueue() {
-	local sSwitch sCommand sUser sFields sArgs nPriority
-
-	sSwitch="$1"
-	sCommand="$2"
-	sUser="`whoami`"
-	sFields=("$@")
-
-	for ((i=2; i < $#; i++)) { sArgs="$sArgs ${sFields[$i]}"; }
-	sArgs="`echo $sArgs | sed -e 's/^ //g;' | sed -e 's/^ //g;'`"
-
-	case "$sSwitch" in
-		"add")
-			# Check the current priority
-			nPriority="`cmdMySQL 'MySB_db' "SELECT max(priority) FROM commands;"`"
-			(( nPriority++ ))
-
-			# Add the commands in database
-			cmdMySQL 'MySB_db' "INSERT INTO commands (commands,reload,priority,args,user) VALUES ('$sCommand','1','$nPriority','$sArgs','$sUser');"
-		;;
-		"remove")
-			cmdMySQL 'MySB_db' "DELETE FROM commands WHERE commands='$sCommand' AND args='$sArgs' AND user='$sUser';"
-		;;
-		"check")
-			nPriority="`cmdMySQL 'MySB_db' "SELECT args FROM commands WHERE commands='$sCommand' AND user='$sUser';"`"
-		;;
-	esac
-}
-
 ##################### LAST LINE ######################################

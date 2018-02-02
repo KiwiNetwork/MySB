@@ -31,18 +31,33 @@ if [ -z "$funcs_tools" ] || [ $funcs_tools -eq 0 ]; then
 	source $MySB_InstallDir/inc/funcs_tools
 fi
 
-#### Current actions
-gfnGetCurrentAction() {
-	case "$gsScriptName" in
-		'MySB_SecurityRules')
-			if [ ! -z "`ps ax | grep -v 'grep' | grep '$gsScriptName'`" ]; then
-				log_daemon_msg "$Global_WaitingForTaskFinish"
-				while [ ! -z "`ps ax | grep -v 'grep' | grep '$gsScriptName'`" ]; do
-					echo -n "."
-					sleep 0.5
-				done
-				gfnStatusSTD
-			fi
+#### Add MySB_SecurityRules command in queue
+gfnAddSecurityInQueue() {
+	local sSwitch sCommand sUser sFields sArgs nPriority
+
+	sSwitch="$1"
+	sCommand="$2"
+	sUser="`whoami`"
+	sFields=("$@")
+
+	for ((i=2; i < $#; i++)) { sArgs="$sArgs ${sFields[$i]}"; }
+	sArgs="`echo $sArgs | sed -e 's/^ //g;' | sed -e 's/^ //g;'`"
+
+	case "$sSwitch" in
+		"add")
+			# Check the current priority
+			nPriority="`cmdMySQL 'MySB_db' "SELECT max(priority) FROM commands;"`"
+			(( nPriority++ ))
+
+			# Add the commands in database
+			cmdMySQL 'MySB_db' "INSERT INTO commands (commands,reload,priority,args,user) VALUES ('$sCommand','1','$nPriority','$sArgs','$sUser');" -v
+		;;
+		"remove")
+			cmdMySQL 'MySB_db' "DELETE FROM commands WHERE commands='$sCommand' AND args='$sArgs' AND user='$sUser';" -v
+		;;
+		"check")
+			sArgs="`cmdMySQL 'MySB_db' "SELECT args FROM commands WHERE commands='$sCommand' AND user='$sUser';"`"
+			echo "$sArgs"
 		;;
 	esac
 }

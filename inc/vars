@@ -49,18 +49,19 @@ if [ ! -z "$gsScriptName" ]; then
 			fi
 		;;
 		MySB_SecurityRules)
-			sCheck="`gfnAddSecurityInQueue 'check' 'MySB_SecurityRules'`"
 			# If arguments in database are different than currents
-			if [ "$sCheck" != "`echo $@ $$`" ]; then
+			if [ "`gfnAddSecurityInQueue 'check' 'MySB_SecurityRules'`" != "`echo $@ $$`" ]; then
 				# We will wait
-				while [ ! -z "$sCheck" ]; do
-					sleep 5
-					sCheck="`gfnAddSecurityInQueue 'check' 'MySB_SecurityRules'`"
+				log_daemon_msg "$Global_WaitingForTaskFinish"
+				while [ "`gfnAddSecurityInQueue 'check' 'MySB_SecurityRules'`" != "`echo $@ $$`" ]; do
+					echo -n "."; sleep 1
 				done
+				gfnStatusLSB
 
 				gfnAddSecurityInQueue 'add' 'MySB_SecurityRules' "$@ $$"
+			else
+				gfnAddSecurityInQueue 'remove' 'MySB_SecurityRules' "$@ $$";;				
 			fi
-			unset sCheck
 		;;
 	esac
 fi
