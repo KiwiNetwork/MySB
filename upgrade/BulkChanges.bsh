@@ -57,6 +57,12 @@ case "$1" in
 		#### To call for every upgrade - EoF
 		####################################
 
+		#### Add MySB files directories
+		echo "MySB_InstallDir=\"$MySB_InstallDir\"" > /etc/MySB/config
+		echo "MySB_Files=\"${MySB_InstallDir}_files\"" > /etc/MySB/config
+		echo "EnvLang=\"$EnvLang\"" >> /etc/MySB/config
+		chmod 0640 /etc/MySB/config
+
 		#### Remove old certificates
 		rm -rfv $MySB_InstallDir/ssl/GeoTrust/
 		rm -rfv $MySB_InstallDir/ssl/GoDaddy/

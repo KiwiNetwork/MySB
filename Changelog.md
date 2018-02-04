@@ -1,6 +1,6 @@
 	Version v5.2
 		(start at: 2018/01/18)
-			- Use of Git LFS, tracking *.zip, *.tar.gz, *.deb and *.wbm files
+			- Use of Git LFS with a second Git repo, tracking *.zip, *.tar.gz, *.deb and *.wbm files
 			- Remove rTorrent incomplete directory
 			- Remove Debian Wheezy possibilities
 			- Add statistics question

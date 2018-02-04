@@ -80,6 +80,7 @@ if [ "$0" != "-bash" ]; then
 	gsDirName=$(dirname $0)
 fi
 gsInstallDirEscaped="`echo $MySB_InstallDir | sed s,/,\\\\\\\\\\/,g`"
+gsFilesDirEscaped="`echo $MySB_Files | sed s,/,\\\\\\\\\\/,g`"
 gsProcessors="`cat /proc/cpuinfo | grep 'processor' | wc -l`"
 gsMemory="`free -m | grep 'Mem' | awk '{ print $2 }'`"
 gsDebianRelease="`lsb_release -cs`"

@@ -34,8 +34,14 @@ RemovePluginCakebox=NO
 RemovePluginManager=NO
 
 #### Git LFS pull
-cd $MySB_InstallDir/
-git lfs pull
+if [ ! -d $MySB_Files ]; then
+	git clone --progress -b $gsCurrentVersion https://github.com/toulousain79/MySB_files.git $MySB_Files
+else
+	cd $MySB_Files/
+	git fetch origin
+	git reset --hard origin/$gsCurrentVersion
+	git pull
+fi
 
 #### Get all repos
 cmdMySQL 'MySB_db' "SELECT name FROM repositories WHERE active='1';" | while read sRepoName; do \
